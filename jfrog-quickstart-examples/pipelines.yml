@@ -16,7 +16,7 @@ resources:
     type: OutgoingWebhook
     configuration:
       webhookName: MyOutgoingWebhookIntegration
-      path: https://webhook.site/0b6f1693-9de4-45f2-87d6-3eedd93cf1e4
+      path: /url
       headers:
         content-type: application/x-www-form-urlencoded
 

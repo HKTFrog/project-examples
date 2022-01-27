@@ -20,6 +20,7 @@ resources:
       headers:
         content-type: application/x-www-form-urlencoded
 
+
 pipelines:
   - name: basic_pipeline
     configuration:

@@ -35,12 +35,9 @@ pipelines:
             - name: myGitRepo
           outputResources:
             - name: myBuildInfo
-            - name: myOWH
         execution:
           onExecute:
             - echo $my_env_var
-            - formUrlEncodedPayload="foo=bar&runNumber=$run_number&stepName=$step_name"
-            - set_payload myOWH "$formUrlEncodedPayload"
             - if [ -z $app_version ]; then add_pipeline_variables app_version=1.0.0; else app_version=$(bump_semver $app_version minor); fi
             - write_output myBuildInfo "buildNumber=$app_version"
             - add_run_variables run_var="hello"
@@ -83,8 +80,12 @@ pipelines:
           inputSteps:
             - name: step_3
             - name: step_4
+          outputResources:
+            - name: myOWH
           integrations:
             - name: my_github
         execution:
           onExecute:
             - 'curl -H "Authorization: token ${int_my_github_token}" ${int_my_github_url}/rate_limit'
+            - formUrlEncodedPayload="foo=bar&runNumber=$run_number&stepName=$step_name"
+            - set_payload myOWH "$formUrlEncodedPayload"

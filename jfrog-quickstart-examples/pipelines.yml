@@ -33,9 +33,9 @@ pipelines:
         configuration:
           inputResources:
             - name: myGitRepo
-            - name: myOWH
           outputResources:
             - name: myBuildInfo
+            - name: myOWH
         execution:
           onExecute:
             - echo $my_env_var

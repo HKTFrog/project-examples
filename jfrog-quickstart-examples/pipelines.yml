@@ -48,6 +48,8 @@ pipelines:
             - write_output myBuildInfo "buildNumber=$app_version"
             - add_run_variables run_var="hello"
             - echo "$res_myIWH_payload" | jq '.' > payload.json
+            - add_run_variables myvar=$(jq '.project' <<< "$res_myIWH_payload”)
+            - echo $myvar
             - cat payload.json
             - echo "$res_myIWH_payload"
             - 'curl -X POST "https://webhook.site/2be34b4b-8a90-47cd-ba9f-a3e237e90765" -H "accept: application/json" -H "x-token: OUvGHNDLQm4LVxiawg1EvSlbDPT98MBbztBpLHZ4LPXzR" -H "Content-Type: application/json" -d "$res_myIWH_payload"'

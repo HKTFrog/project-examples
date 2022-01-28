@@ -49,7 +49,7 @@ pipelines:
             - add_run_variables run_var="hello"
             - echo "$res_myIWH_payload" | jq '.' > payload.json
             - echo "$res_myIWH_payload"
-            - echo (read_json payload.json "project")
+            - echo $(read_json payload.json)
             - add_run_variables project= (read_json payload.json "project")
             - echo $project
             - add_run_variables stage=read_json payload.json "stage"

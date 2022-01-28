@@ -101,6 +101,6 @@ pipelines:
         execution:
           onExecute:
             - 'curl -H "Authorization: token ${int_my_github_token}" ${int_my_github_url}/rate_limit' 
-            curl -X POST "https://pye55831.cloudautomation.live.dynatrace.com/api/v1/event" -H "accept: application/json" -H "x-token: OUvGHNDLQm4LVxiawg1EvSlbDPT98MBbztBpLHZ4LPXzR" -H "Content-Type: application/json" -d "$json"
+            - 'curl -X POST "https://pye55831.cloudautomation.live.dynatrace.com/api/v1/event" -H "accept: application/json" -H "x-token: OUvGHNDLQm4LVxiawg1EvSlbDPT98MBbztBpLHZ4LPXzR" -H "Content-Type: application/json" -d "$json"'
             - formUrlEncodedPayload="foo=bar&runNumber=$run_number&stepName=$step_name"
             - set_payload myOWH "$formUrlEncodedPayload"

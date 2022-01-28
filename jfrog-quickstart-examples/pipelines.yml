@@ -48,7 +48,9 @@ pipelines:
             - write_output myBuildInfo "buildNumber=$app_version"
             - add_run_variables run_var="hello"
             - echo "$res_myIWH_payload" | jq '.' > payload.json
-            - read_json payload.json "project" | add_run_variables project=1
+            - echo "$res_myIWH_payload"
+            - echo $(read_json payload.json "project")
+            - add_run_variables project= $(read_json payload.json "project")
             - echo $project
             - add_run_variables stage=read_json payload.json "stage"
             - echo $stage

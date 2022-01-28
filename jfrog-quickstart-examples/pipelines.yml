@@ -50,7 +50,7 @@ pipelines:
             - echo "$res_myIWH_payload" | jq '.' > payload.json
             - echo "$res_myIWH_payload"
             - echo $(read_json payload.json "project")
-            - add_run_variables project= $(read_json payload.json "project")
+            - add_run_variables project= (read_json payload.json "project")
             - echo $project
             - add_run_variables stage=read_json payload.json "stage"
             - echo $stage

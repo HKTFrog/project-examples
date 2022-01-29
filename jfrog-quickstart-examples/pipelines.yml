@@ -26,11 +26,6 @@ resources:
 
 pipelines:
   - name: basic_pipeline
-    #configuration:
-    #  environmentVariables:
-      #  readOnly:
-          #my_env_var: "hello"
-
     steps:
       - name: step_1
         type: Bash
@@ -41,28 +36,21 @@ pipelines:
             - name: myBuildInfo
         execution:
           onExecute:
-            #- echo $my_env_var
             - if [ -z $app_version ]; then add_pipeline_variables app_version=1.0.0; else app_version=$(bump_semver $app_version minor); fi
             - write_output myBuildInfo "buildNumber=$app_version"
-            #- add_run_variables run_var="hello"
             - echo "$res_myIWH_payload" | jq '.' > payload.json
-            #- add_run_variables myvar=$(jq '.project' <<< "$res_myIWH_payload”)
-            #- echo $myvar
-            #- cat payload.json
             - echo "$res_myIWH_payload"
-            #- 'curl -X POST "https://webhook.site/2be34b4b-8a90-47cd-ba9f-a3e237e90765" -H "accept: application/json" -H "x-token: OUvGHNDLQm4LVxiawg1EvSlbDPT98MBbztBpLHZ4LPXzR" -H "Content-Type: application/json" -d "$res_myIWH_payload"'
-            #- echo $(read_json $res_myIWH_payload "project")
             - add_run_variables project=$(read_json payload.json "project")
-            - echo $project
+            #- echo $project
             - add_run_variables stage=$(read_json payload.json "stage")
-            - echo $stage
+            #- echo $stage
             - add_run_variables service=$(read_json payload.json "service")
-            - echo $service
+            #- echo $service
             - add_run_variables shkeptncontext=$(read_json payload.json "shkeptncontext")
-            - echo $shkeptncontext
+            #- echo $shkeptncontext
             - add_run_variables id=$(read_json payload.json "id")
-            - echo $id
-            - add_run_variables my_payload=$(cat <<-END {"data":{"project":"${project}","stage":"${stage}","service":"${service}","status":"succeeded","result":"pass"},"source":"cas-quickstart","specversion":"1.0","type":"sh.keptn.event.mytask-interactive.finished","shkeptncontext":"${shkeptncontext}","triggeredid":"${id}"}END)
+            #- echo $id
+            - add_run_variables my_payload=$(cat <<-END {"data":{"project":"$project","stage":"$stage","service":"$service","status":"succeeded","result":"pass"},"source":"cas-quickstart","specversion":"1.0","type":"sh.keptn.event.mytask-interactive.finished","shkeptncontext":"$shkeptncontext","triggeredid":"$id"}END)
             - echo $my_payload
       - name: step_2
         type: Bash

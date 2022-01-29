@@ -51,8 +51,8 @@ pipelines:
             #- cat payload.json
             - echo "$res_myIWH_payload"
             #- 'curl -X POST "https://webhook.site/2be34b4b-8a90-47cd-ba9f-a3e237e90765" -H "accept: application/json" -H "x-token: OUvGHNDLQm4LVxiawg1EvSlbDPT98MBbztBpLHZ4LPXzR" -H "Content-Type: application/json" -d "$res_myIWH_payload"'
-            - echo $(read_json $res_myIWH_payload "project")
-            - add_run_variables project= $(read_json payload.json "project")
+            #- echo $(read_json $res_myIWH_payload "project")
+            - add_run_variables project=$(read_json payload.json "project")
             - echo $project
             - add_run_variables stage=$(read_json payload.json "stage")
             - echo $stage

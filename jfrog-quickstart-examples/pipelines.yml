@@ -26,7 +26,7 @@ resources:
 
 pipelines:
   - name: basic_pipeline
-    configuration:
+    #configuration:
     #  environmentVariables:
       #  readOnly:
           #my_env_var: "hello"

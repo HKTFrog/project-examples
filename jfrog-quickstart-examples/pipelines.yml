@@ -31,13 +31,11 @@ pipelines:
         readOnly:
           my_env_var: "hello"
 
-
     steps:
       - name: step_1
         type: Bash
         configuration:
           inputResources:
-            - name: myGitRepo
             - name: myIWH
           outputResources:
             - name: myBuildInfo

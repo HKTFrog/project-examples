@@ -21,8 +21,9 @@ pipelines:
             - name: myIWH
         execution:
           onExecute:
-            - echo "$res_myIWH_payload" | jq '.' > payload.json
-            - echo "$res_myIWH_payload"
+            - |
+            echo "$res_myIWH_payload" | jq '.' > payload.json
+            echo "$res_myIWH_payload"
             - add_run_variables project=$(read_json payload.json "project")
             - add_run_variables stage=$(read_json payload.json "stage")
             - add_run_variables service=$(read_json payload.json "service")

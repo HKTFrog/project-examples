@@ -45,8 +45,7 @@ pipelines:
             - add_run_variables service=$(read_json payload.json "service")
             - add_run_variables shkeptncontext=$(read_json payload.json "shkeptncontext")
             - add_run_variables id=$(read_json payload.json "id")
-            - |
-            JSON_STRING=$( jq -n \
+            - JSON_STRING=$( jq -n \
                   --arg bn $(read_json payload.json "project") \
                   --arg on $(read_json payload.json "stage") \
                   --arg tl $(read_json payload.json "service") \
@@ -54,45 +53,12 @@ pipelines:
             - echo $JSON_STRING
             - add_run_variables my_payload=$(cat << {"data":{"project":"$project","stage":"$stage","service":"$service","status":"succeeded","result":"pass"},"source":"cas-quickstart","specversion":"1.0","type":"sh.keptn.event.mytask-interactive.finished","shkeptncontext":"$shkeptncontext","triggeredid":"$id"})
             - echo $my_payload
+            - echo $JSON_STRING
       - name: step_2
         type: Bash
         configuration:
-          inputResources:
-            - name: myBuildInfo
-          runtime:
-            type: image
-            image:
-              auto:
-                language: java
-                versions: ['11']
-        execution:
-          onExecute:
-            - echo $run_var
-            - echo $res_myBuildInfo_buildNumber
-      - name: step_3
-        type: Bash
-        configuration:
-          environmentVariables:
-            step_env_var1: "hello"
           inputSteps:
-            - name: step_2
-        execution:
-          onExecute:
-            - echo $step_env_var1
-      - name: step_4
-        type: Bash
-        configuration:
-          inputSteps:
-            - name: step_2
-        execution:
-          onExecute:
-            - echo $app_version
-      - name: step_5
-        type: Bash
-        configuration:
-          inputSteps:
-            - name: step_3
-            - name: step_4
+            - name: step_1
           outputResources:
             - name: myOWH
           integrations:

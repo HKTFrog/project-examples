@@ -28,15 +28,9 @@ pipelines:
             - add_run_variables service=$(read_json payload.json "service")
             - add_run_variables shkeptncontext=$(read_json payload.json "shkeptncontext")
             - add_run_variables idx=$(read_json payload.json "id")
-            - |
-            JSON_STRING=$(jq -n
-            --arg pr $project
-            --arg st $stage
-            --arg sv $service
-            --arg sh $shkeptncontext
-            --arg id $idx
-            '{data:{project:$pr,stage:$st,service:$sv,status:"succeeded",result:"pass"},source:"cas-quickstart",specversion:"1.0",type:"sh.keptn.event.mytask-interactive.finished",shkeptncontext:$sh,triggeredid:$id}')
+            - JSON_STRING=$(jq -n --arg pr $project --arg st $stage --arg sv $service --arg sh $shkeptncontext --arg id $idx '{data:{project:$pr,stage:$st,service:$sv,status:"succeeded",result:"pass"},source:"cas-quickstart",specversion:"1.0",type:"sh.keptn.event.mytask-interactive.finished",shkeptncontext:$sh,triggeredid:$id}')
             - echo $JSON_STRING
+            - add_run_variables my_payload=$JSON_STRING
       - name: step_2
         type: Bash
         configuration:
@@ -44,11 +38,7 @@ pipelines:
             - name: step_1
           outputResources:
             - name: myOWH
-          integrations:
-            - name: my_github
         execution:
           onExecute:
-            - 'curl -H "Authorization: token ${int_my_github_token}" ${int_my_github_url}/rate_limit'
             - 'curl -X POST "https://pye55831.cloudautomation.live.dynatrace.com/api/v1/event" -H "accept: application/json" -H "x-token: OUvGHNDLQm4LVxiawg1EvSlbDPT98MBbztBpLHZ4LPXzR" -H "Content-Type: application/json" -d "$my_payload"'
-            - formUrlEncodedPayload="foo=bar&runNumber=$run_number&stepName=$step_name"
             - set_payload myOWH "$formUrlEncodedPayload"

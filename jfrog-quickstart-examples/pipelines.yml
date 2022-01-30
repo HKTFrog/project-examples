@@ -28,8 +28,8 @@ pipelines:
             - add_run_variables service=$(read_json payload.json "service")
             - add_run_variables shkeptncontext=$(read_json payload.json "shkeptncontext")
             - add_run_variables id=$(read_json payload.json "id")
-            - |
-            JSON_STRING=$(jq -n \n
+            - |-
+            JSON_STRING=$(jq -n \
             --arg bn $(read_json payload.json "project") --arg on $(read_json payload.json "stage") --arg tl $(read_json payload.json "service") '{bucketname:$bn, objectname:$on, targetlocation:$tl}')
             - echo $JSON_STRING
             - add_run_variables my_payload=$(cat << {"data":{"project":"$project","stage":"$stage","service":"$service","status":"succeeded","result":"pass"},"source":"cas-quickstart","specversion":"1.0","type":"sh.keptn.event.mytask-interactive.finished","shkeptncontext":"$shkeptncontext","triggeredid":"$id"})

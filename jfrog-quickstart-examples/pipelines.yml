@@ -1,11 +1,4 @@
 resources:
-  - name: myOWH
-    type: OutgoingWebhook
-    configuration:
-      webhookName: MyOutgoingWebhookIntegration
-      path: /url
-      headers:
-        content-type: application/x-www-form-urlencoded
   - name: myIWH
     type: IncomingWebhook
     configuration:
@@ -22,14 +15,11 @@ pipelines:
         execution:
           onExecute:
             - echo "$res_myIWH_payload" | jq '.' > payload.json
-            - echo "$res_myIWH_payload"
             - add_run_variables project=$(read_json payload.json "project")
             - add_run_variables stage=$(read_json payload.json "stage")
             - add_run_variables service=$(read_json payload.json "service")
             - add_run_variables shkeptncontext=$(read_json payload.json "shkeptncontext")
             - add_run_variables idx=$(read_json payload.json "id")
-            - JSON_STRING=$(jq -n --arg pr $project --arg st $stage --arg sv $service --arg sh $shkeptncontext --arg id $idx '{data:{project:$pr,stage:$st,service:$sv,status:"succeeded",result:"pass"},source:"cas-quickstart",specversion:"1.0",type:"sh.keptn.event.mytask-interactive.finished",shkeptncontext:$sh,triggeredid:$id}')
-            - echo $JSON_STRING
             - add_run_variables my_payload="$(jq -n --arg pr $project --arg st $stage --arg sv $service --arg sh $shkeptncontext --arg id $idx '{data:{project:$pr,stage:$st,service:$sv,status:"succeeded",result:"pass"},source:"cas-quickstart",specversion:"1.0",type:"sh.keptn.event.mytask-interactive.finished",shkeptncontext:$sh,triggeredid:$id}')"
             - echo "$my_payload"
       - name: step_2
@@ -37,9 +27,6 @@ pipelines:
         configuration:
           inputSteps:
             - name: step_1
-          outputResources:
-            - name: myOWH
-        execution:
+          execution:
           onExecute:
             - 'curl -X POST "https://pye55831.cloudautomation.live.dynatrace.com/api/v1/event" -H "accept: application/json" -H "x-token: OUvGHNDLQm4LVxiawg1EvSlbDPT98MBbztBpLHZ4LPXzR" -H "Content-Type: application/json" -d "$my_payload"'
-            - set_payload myOWH "$formUrlEncodedPayload"

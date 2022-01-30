@@ -6,12 +6,6 @@ resources:
       path: HKTFrog/project-examples
       branches:
         include: master
-  - name: myBuildInfo
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: art
-      buildName: SampleApp
-      buildNumber: 1
   - name: myOWH
     type: OutgoingWebhook
     configuration:
@@ -32,12 +26,8 @@ pipelines:
         configuration:
           inputResources:
             - name: myIWH
-          outputResources:
-            - name: myBuildInfo
         execution:
           onExecute:
-            - if [ -z $app_version ]; then add_pipeline_variables app_version=1.0.0; else app_version=$(bump_semver $app_version minor); fi
-            - write_output myBuildInfo "buildNumber=$app_version"
             - echo "$res_myIWH_payload" | jq '.' > payload.json
             - echo "$res_myIWH_payload"
             - add_run_variables project=$(read_json payload.json "project")
@@ -49,7 +39,7 @@ pipelines:
                   --arg bn $(read_json payload.json "project") \
                   --arg on $(read_json payload.json "stage") \
                   --arg tl $(read_json payload.json "service") \
-                  {bucketname:$bn, objectname:$on, targetlocation:$tl} )
+                  '{bucketname:$bn, objectname:$on, targetlocation:$tl}')
             - echo $JSON_STRING
             - add_run_variables my_payload=$(cat << {"data":{"project":"$project","stage":"$stage","service":"$service","status":"succeeded","result":"pass"},"source":"cas-quickstart","specversion":"1.0","type":"sh.keptn.event.mytask-interactive.finished","shkeptncontext":"$shkeptncontext","triggeredid":"$id"})
             - echo $my_payload

@@ -21,17 +21,14 @@ pipelines:
             - name: myIWH
         execution:
           onExecute:
-            - |
-            echo "$res_myIWH_payload" | jq '.' > payload.json
-            echo "$res_myIWH_payload"
+            - echo "$res_myIWH_payload" | jq '.' > payload.json
+            - echo "$res_myIWH_payload"
             - add_run_variables project=$(read_json payload.json "project")
             - add_run_variables stage=$(read_json payload.json "stage")
             - add_run_variables service=$(read_json payload.json "service")
             - add_run_variables shkeptncontext=$(read_json payload.json "shkeptncontext")
             - add_run_variables id=$(read_json payload.json "id")
-            - >
-            JSON_STRING=$(jq -n
-            --arg bn $(read_json payload.json "project") --arg on $(read_json payload.json "stage") --arg tl $(read_json payload.json "service") '{bucketname:$bn, objectname:$on, targetlocation:$tl}')
+            - JSON_STRING=$(jq -n --arg pr $project --arg st $stage --arg sv $"service" --arg sh $shkeptncontext --arg id '{bucketname:$pr, objectname:$st, targetlocation:$id}')
             - echo $JSON_STRING
             - add_run_variables my_payload=$(cat << {"data":{"project":"$project","stage":"$stage","service":"$service","status":"succeeded","result":"pass"},"source":"cas-quickstart","specversion":"1.0","type":"sh.keptn.event.mytask-interactive.finished","shkeptncontext":"$shkeptncontext","triggeredid":"$id"})
             - echo $my_payload

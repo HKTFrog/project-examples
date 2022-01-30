@@ -29,7 +29,7 @@ pipelines:
             - add_run_variables shkeptncontext=$(read_json payload.json "shkeptncontext")
             - add_run_variables idx=$(read_json payload.json "id")
             #- JSON_STRING=$(jq -n --arg pr $project --arg st $stage --arg sv $service --arg sh $shkeptncontext '{data:{"project":bucketname:$pr, objectname:$st, targetlocation:$sh}')
-            - JSON_STRING=$(jq -n --arg pr $project --arg st $stage --arg sv $service --arg sh $shkeptncontext --arg id $idx '{data:{project:$pr,stage:$st,service:$sv,status:"succeeded",result:pass},source:"cas-quickstart",specversion:"1.0",type:"sh.keptn.event.mytask-interactive.finished",shkeptncontext:$sh,triggeredid:$id}')
+            - JSON_STRING=$(jq -n --arg pr $project --arg st $stage --arg sv $service --arg sh $shkeptncontext --arg id $idx '{data:{project:$pr,stage:$st,service:$sv,status:"succeeded",result:"pass"},source:"cas-quickstart",specversion:"1.0",type:"sh.keptn.event.mytask-interactive.finished",shkeptncontext:$sh,triggeredid:$id}')
             - echo $JSON_STRING
             - add_run_variables my_payload=$(cat << {"data":{"project":"$project","stage":"$stage","service":"$service","status":"succeeded","result":"pass"},"source":"cas-quickstart","specversion":"1.0","type":"sh.keptn.event.mytaskinteractive.finished","shkeptncontext":"$shkeptncontext","triggeredid":"$id"})
             - echo $my_payload

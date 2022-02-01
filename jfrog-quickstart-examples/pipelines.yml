@@ -15,9 +15,9 @@ pipelines:
         execution:
           onExecute:
             - |
-            echo "Step1:"
-            echo "Step2:"
-            echo "Step3:"
+              echo "Step1:"
+              echo "Step2:"
+              echo "Step3:"
             - echo "$res_myIWH_payload" | jq '.' > payload.json
             - add_run_variables project=$(read_json payload.json "project")
             - add_run_variables stage=$(read_json payload.json "stage")

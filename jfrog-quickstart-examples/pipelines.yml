@@ -10,8 +10,6 @@ pipelines:
       - name: step_1
         type: Bash
         configuration:
-          integrations:
-            - name: DynaCred
           inputResources:
             - name: myIWH
         execution:
@@ -29,6 +27,8 @@ pipelines:
       - name: step_2
         type: Bash
         configuration:
+          integrations:
+            - name: DynaCred
           inputSteps:
             - name: step_1
         execution:

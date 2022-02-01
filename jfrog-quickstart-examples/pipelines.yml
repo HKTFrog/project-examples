@@ -37,4 +37,4 @@ pipelines:
             - echo $int_DynaCred_URL
             - echo "$int_DynaCred_URL"
             - printenv int_myCredentials_password
-            - 'curl -X POST "$int_DynaCred_URL" -H "accept: application/json" -H 'x-token: "$int_DynaCred_API_TOKEN"' -H "Content-Type: application/json" -d "$my_payload"'
+            - 'curl -X POST "$int_DynaCred_URL" -H "accept: application/json" -H "x-token: $int_DynaCred_API_TOKEN" -H "Content-Type: application/json" -d "$my_payload"'

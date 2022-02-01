@@ -10,6 +10,8 @@ pipelines:
       - name: step_1
         type: Bash
         configuration:
+          integrations:
+            - name: DynaCred
           inputResources:
             - name: myIWH
         execution:
@@ -31,4 +33,4 @@ pipelines:
             - name: step_1
         execution:
           onExecute:
-            - 'curl -X POST "https://pye55831.cloudautomation.live.dynatrace.com/api/v1/event" -H "accept: application/json" -H "x-token: OUvGHNDLQm4LVxiawg1EvSlbDPT98MBbztBpLHZ4LPXzR" -H "Content-Type: application/json" -d "$my_payload"'
+            - 'curl -X POST $int_DynaCred_URL -H "accept: application/json" -H "x-token: int_DynaCred_API_TOKEN" -H "Content-Type: application/json" -d "$my_payload"'

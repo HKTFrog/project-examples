@@ -15,11 +15,6 @@ pipelines:
         execution:
           onExecute:
             - echo "$res_myIWH_payload" | jq '.' > payload.json
-            - add_run_variables project=$(read_json payload.json "project")
-            - add_run_variables stage=$(read_json payload.json "stage")
-            - add_run_variables service=$(read_json payload.json "service")
-            - add_run_variables shkeptncontext=$(read_json payload.json "shkeptncontext")
-            - add_run_variables idx=$(read_json payload.json "id")
             - |
               add_run_variables my_payload="$(jq -n \
               --arg pr $(read_json payload.json "project") \
@@ -27,7 +22,13 @@ pipelines:
               --arg sv $(read_json payload.json "service") \
               --arg sh $(read_json payload.json "shkeptncontext") \
               --arg id $(read_json payload.json "id") \
-              '{data:{project:$pr,stage:$st,service:$sv,status:"succeeded",result:"pass"},source:"cas-quickstart",specversion:"1.0",type:"sh.keptn.event.mytask-interactive.finished",shkeptncontext:$sh,triggeredid:$id}')"
+              '{ \
+               data:{project:$pr,stage:$st,service:$sv,status:"succeeded",result:"pass"}, \
+               source:"cas-quickstart", \
+               specversion:"1.0", \
+               type:"sh.keptn.event.mytask-interactive.finished", \
+               shkeptncontext:$sh,triggeredid:$id \
+              }')"
             - echo "$my_payload"
       - name: step_2
         type: Bash

@@ -34,3 +34,24 @@ pipelines:
         execution:
           onExecute:
             - 'curl -X POST "$int_DynaCred_URL" -H "accept: application/json" -H "x-token: $int_DynaCred_API_TOKEN" -H "Content-Type: application/json" -d "$my_payload"'
+
+      - name: slo
+        type: Bash
+        configuration:
+          affinityGroup: slo
+          integrations:
+            - name: DynaCred
+          inputSteps:
+            - name: step_2
+        execution:
+          onExecute:
+            - |
+              docker run  \
+                  --env EVALUATION_RULE="pass_on_warning" \
+                  --env KEPTN_BASE_URL=$int_DynaCred_URL \
+                  --env KEPTN_API_TOKEN=$int_DynaCred_API_TOKEN \
+                  --env KEPTN_PROJECT=demo \
+                  --env KEPTN_SERVICE=casdemoapp \
+                  --env KEPTN_STAGE=production \
+                  dtdemos/keptn-automation:0.2.0 \
+                  slo-evaluation.sh

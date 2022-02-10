@@ -7,9 +7,10 @@ resources:
 pipelines:
   - name: basic_pipeline
     steps:
-      - name: step_1
+      - name: Processing_Incoming_Webhook
         type: Bash
         configuration:
+          affinityGroup: Cloud_Automation_Interative_Webhook
           inputResources:
             - name: myIWH
         execution:
@@ -24,32 +25,33 @@ pipelines:
               --arg id $(read_json payload.json "id") \
               '{data:{project:$pr,stage:$st,service:$sv,status:"succeeded",result:"pass"},source:"cas-quickstart",specversion:"1.0",type:"sh.keptn.event.mytask-interactive.finished",shkeptncontext:$sh,triggeredid:$id}')"
             - echo "$my_payload"
-      - name: step_2
+      - name: Send_Finish_Event
         type: Bash
         configuration:
+          affinityGroup: Cloud_Automation_Interative_Webhook
           integrations:
             - name: DynaCred
           inputSteps:
-            - name: step_1
+            - name: Processing_Incoming_Webhook
         execution:
           onExecute:
-            - 'curl -X POST "$int_DynaCred_URL" -H "accept: application/json" -H "x-token: $int_DynaCred_API_TOKEN" -H "Content-Type: application/json" -d "$my_payload"'
+            - 'curl -X POST "$int_DynaCred_BASE_URL/api/v1/event" -H "accept: application/json" -H "x-token: $int_DynaCred_API_TOKEN" -H "Content-Type: application/json" -d "$my_payload"'
 
-      - name: slo
+      - name: SLO_Quality_Gate
         type: Bash
         configuration:
-          affinityGroup: slo
+          affinityGroup: SLO_Quality_Gate
           integrations:
-            - name: DynaCred2
+            - name: DynaCred
           inputSteps:
-            - name: step_2
+            - name: Send_Finish_Event
         execution:
           onExecute:
             - |
               docker run  \
                   --env EVALUATION_RULE="pass_on_warning" \
-                  --env KEPTN_BASE_URL=$int_DynaCred2_URL \
-                  --env KEPTN_API_TOKEN=$int_DynaCred2_API_TOKEN \
+                  --env KEPTN_BASE_URL=$int_DynaCred_BASE_URL \
+                  --env KEPTN_API_TOKEN=$int_DynaCred_API_TOKEN \
                   --env KEPTN_PROJECT=demo \
                   --env KEPTN_SERVICE=casdemoapp \
                   --env KEPTN_STAGE=production \

@@ -48,8 +48,8 @@ pipelines:
             - |
               docker run  \
                   --env EVALUATION_RULE="pass_on_warning" \
-                  --env KEPTN_BASE_URL=$int_DynaCred_URL \
-                  --env KEPTN_API_TOKEN=$int_DynaCred_API_TOKEN \
+                  --env KEPTN_BASE_URL=$int_DynaCred2_URL \
+                  --env KEPTN_API_TOKEN=$int_DynaCred2_API_TOKEN \
                   --env KEPTN_PROJECT=demo \
                   --env KEPTN_SERVICE=casdemoapp \
                   --env KEPTN_STAGE=production \

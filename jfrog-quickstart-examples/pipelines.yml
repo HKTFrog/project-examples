@@ -40,7 +40,7 @@ pipelines:
         configuration:
           affinityGroup: slo
           integrations:
-            - name: DynaCred
+            - name: DynaCred2
           inputSteps:
             - name: step_2
         execution:
